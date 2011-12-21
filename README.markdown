@@ -2,7 +2,9 @@ This is just a sample app to play with:
 
 * [node.js](http://nodejs.org)
 * [express](http://expressjs.com/) as web server
+* [mongoose](http://mongoosejs.com/) as NoSQL ODM
 * [jade](http://jade-lang.com/) as view engine
+* [stylus](http://learnboost.github.com/stylus/) as CSS compiler
 * [jQuery](http://jquery.org) as client side technology 
 
 Disclaimer

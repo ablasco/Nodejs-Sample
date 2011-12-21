@@ -3,7 +3,10 @@
  * Module dependencies.
  */
 
-var express = require('express')
+var util    = require('util')
+  , url     = require('url')
+  , express = require('express')
+  , factsdb = require('./factsdb')
   , routes = require('./routes')
   , stylus = require('stylus')
 
@@ -14,6 +17,8 @@ var app = module.exports = express.createServer();
 app.configure(function(){
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
+  app.use(express.logger());
+  //app.use(express.cookieParser());
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(app.router);
@@ -30,6 +35,14 @@ app.configure('development', function(){
 
 app.configure('production', function(){
   app.use(express.errorHandler()); 
+});
+
+
+factsdb.connect(function(error) {
+    if (error) throw error;
+});
+app.on('close', function(errno) {
+    factsdb.disconnect(function(err) { });
 });
 
 // Routes

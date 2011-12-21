@@ -1,9 +1,12 @@
 {
-    "name": "application-name"
-  , "version": "0.0.1"
+    "name": "MegaFacts"
+  , "version": "0.0.2"
   , "private": true
   , "dependencies": {
       "express": "2.5.0"
-    , "jade": ">= 0.0.1"
+    , "jade": ">= 0.15.0"
+    , "stylus": ">= 0.21.0"
+    , "async": ">= 0.1.0"
+    , "underscore": ">= 1.2.0"
   }
 }

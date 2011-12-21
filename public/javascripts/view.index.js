@@ -5,9 +5,9 @@ var MF = {};
  * @param data
  */
 MF.renderFact = function(data) {
-    var fDate = data.date || new Date();
-    var fUser = data.user || 'anonymous coward';
-    var fBody = data;
+    var fDate = data.ts || new Date();
+    var fUser = data.author || 'anonymous';
+    var fBody = data.fact;
 
     var tpl =
         '<div class="post">' +
@@ -51,7 +51,7 @@ MF.addFact = function() {
     $.ajax({
         type: "POST",
         url: "/hero/add-fact",
-        data: JSON.stringify({ name: name, fact: fact }),
+        data: JSON.stringify({ author: 'anonymous-form', name: name, fact: fact }),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
 
