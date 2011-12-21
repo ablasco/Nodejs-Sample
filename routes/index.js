@@ -1,6 +1,6 @@
 var _ = require('underscore');
 
-// TODO: This shoul be read from a database
+// TODO: This should be read from a database
 var heroes = [
   { 
     name: 'Chuck Norris', 
@@ -30,7 +30,7 @@ var heroes = [
 
 exports.index = function(req, res) {
   var names = heroes.map(function(p) { return p.name; });
-  res.render('index', { heroes: names })
+  res.render('index', { heroes: names });
 };
 
 exports.hero = function(req, res) {
@@ -38,7 +38,7 @@ exports.hero = function(req, res) {
     return p.name == req.params.name;
   }).facts;
   res.json(facts);
-}
+};
 
 exports.addFact = function(req, res) {
   var hero = _(heroes).detect(function(p) {
@@ -50,4 +50,4 @@ exports.addFact = function(req, res) {
   console.log('New fact for ' + hero.name + ': ' + req.body.fact);
   
   res.json({status: 'ok' });
-}
+};

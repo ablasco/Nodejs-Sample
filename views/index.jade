@@ -1,16 +1,28 @@
 script(src="/javascripts/jquery-1.6.4.min.js")
 script(src="/javascripts/view.index.js")
 
-#left-column.column
-  h2 Elige tu héroe
-  ul#heroes
-    each hero in heroes
-      li(class='hero-name')
-        a(href='#') #{hero}
-        
-#right-column.column
-  h2 Facts
-  ul#facts
-  label(for="new-fact") Añadir nuevo fact:
-  textarea#new-fact
-  a(id='add-new-fact', href='#') Añadir
+#ads
+  a(href="#")
+    img(src="images/ad160x600.gif", alt="", width="160", height="450")
+
+#content
+  #content-header
+    img(src="../images/img17.jpg")
+    h3 Some curious facts about:
+    h2 Facts
+
+  #facts
+
+  #new-fact-form
+    label(for="new-fact") Add new fact:
+    textarea#new-fact
+    a(id='add-new-fact', href='#') Add
+
+#sidebar
+  ul
+    li#categories
+      h2 Choose your hero
+      ul#heroes
+        each hero in heroes
+          li
+            a(href='#') #{hero}
