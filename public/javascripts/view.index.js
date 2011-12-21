@@ -76,6 +76,24 @@ $(function() {
     // Initial state.
     $('#content').hide();
 
+    $('#add-new-fact').button({disabled: true});
+    $('#new-fact').bind('keyup', function(evt) {
+        var noValue = (evt.target.value === ''),
+            btn = $('#add-new-fact');
+
+        btn.button("option", "disabled", noValue);
+    });
+
+    // a workaround for a flaw in the demo system (http://dev.jqueryui.com/ticket/4375), ignore!
+    $("#dialog:ui-dialog").dialog("destroy");
+    $('#show-add')
+        .button()
+        .click(function() {
+            $("#new-fact-form").dialog({
+                modal: true
+            });
+        });
+
     // Binding event handlers.
     $('#heroes li a').click(MF.listFacts);
     $('#add-new-fact').click(MF.addFact);

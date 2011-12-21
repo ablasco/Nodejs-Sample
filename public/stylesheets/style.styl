@@ -22,6 +22,9 @@ fieldset
   padding 0
   border none
 
+label, input, textarea
+  margin-bottom 1em
+
 input, textarea
   padding 5px
   border 1px solid #626262
@@ -240,8 +243,11 @@ img
     .comments
       background url(../images/img10.gif) no-repeat
 
-#new-fact-form *
-  display block
+#new-fact-form
+  display none
+  textarea, label
+    display block
+    width 100%
 
 
 
