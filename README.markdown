@@ -12,3 +12,12 @@ Disclaimer
 
 This *IS NOT* intended to be a catalogue of best practices. This is just
 a very simple sample plenty of room for improvement. 
+
+
+TO BE IMPROVED
+--------------
+* ~~Persistence. Remove mocks and try MongoDB+mongoose or other NoSQL database.~~
+* IN PROGRESS - Better interface. Integrate some free template and improve it with "jQuery UI" widgets.
+* Session control. Implement things like authentication, autorisation, etc., and mantain state via cookies.
+* Unit tests. Maybe we could try "expresso".
+* Better client architecture. Playing a bit with client frameworks to improve databinding and validation (Knockout, Backbone, etc).
