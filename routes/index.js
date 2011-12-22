@@ -1,4 +1,5 @@
 var _ = require('underscore')
+  , url = require('url')
   , factsdb = require('../factsdb')
 
 
@@ -29,10 +30,28 @@ exports.hero = function(req, res) {
 
 
 exports.addFact = function(req, res) {
-  factsdb.add(req.body.author, req.body.name, req.body.fact, function(error) {
-    if (error) throw error;
-    res.json({status: 'ok' });
-    console.log('New fact for ' + req.body.name + ': ' + req.body.fact);
-    //res.redirect('/');
+  factsdb.add(req.body.author, req.body.hero, req.body.fact, function(error) {
+      if (error) throw error;
+      res.json({status: 'ok' });
+      console.log('New fact for ' + req.body.hero + ': ' + req.body.fact);
+      //res.redirect('/hero/' + req.body.hero);
   });
 };
+
+
+exports.editFact = function(req, res) {
+  factsdb.edit(req.body.id, null, req.body.author, req.body.hero, req.body.fact, function(error) {
+    if (error) throw error;
+    res.json({status: 'ok' });
+    console.log('Edit fact for ' + req.body.hero + ': ' + req.body.fact);
+    //res.redirect('/hero/' + req.body.hero);
+  });
+};
+
+exports.deleteFact = function(req, res) {
+  factsdb.delete(req.params.id, function(error) {
+    if (error) throw error;
+    res.json({status: 'ok' });
+    console.log('Deleted fact: ' + id);
+  });
+}

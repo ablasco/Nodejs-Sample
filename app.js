@@ -17,7 +17,7 @@ var app = module.exports = express.createServer();
 app.configure(function(){
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
-  app.use(express.logger());
+  //app.use(express.logger());
   //app.use(express.cookieParser());
   app.use(express.bodyParser());
   app.use(express.methodOverride());
@@ -50,6 +50,8 @@ app.on('close', function(errno) {
 app.get('/', routes.index);
 app.get('/hero/:name', routes.hero);
 app.post('/hero/add-fact', routes.addFact);
+app.post('/hero/edit-fact', routes.editFact);
+app.get('/hero/delete-fact/:id', routes.deleteFact);
 
 app.listen(3000);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

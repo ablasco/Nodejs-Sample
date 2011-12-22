@@ -16,10 +16,18 @@ script(src="/javascripts/view.index.js")
 
   button#show-add Add new fact
 
-  #new-fact-form(title="Add new fact")
-    //label(for="new-fact") Add new fact:
+  #new-fact-form
+    input(id="fact-id", type="hidden")
+    label(for="hero") Hero:
+    input#hero
+    label(for="new-fact") Fact:
     textarea#new-fact
     input(id="add-new-fact", type="submit")
+
+  #dialog-confirm
+    p
+      span(class="ui-icon ui-icon-alert", style="float:left; margin:0 7px 20px 0;")
+      | Are you sure?
 
 #sidebar
   ul

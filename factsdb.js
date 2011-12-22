@@ -75,12 +75,12 @@ exports.delete = function(id, callback) {
  * @param {String} fact
  * @param {Function} callback
  */
-exports.edit = function(id, author, hero, fact, callback) {
+exports.edit = function(id, ts, author, hero, fact, callback) {
     exports.findFactById(id, function(err, doc) {
         if (err)
             callback(err);
         else {
-            doc.ts     = new Date();
+            doc.ts     = ts || new Date();
             doc.author = author;
             doc.hero   = hero;
             doc.fact   = fact;
@@ -92,7 +92,7 @@ exports.edit = function(id, author, hero, fact, callback) {
                     callback(null);
             });
         }
-    });    
+    });
 }
 
 /**
