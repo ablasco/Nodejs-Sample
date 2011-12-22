@@ -5,14 +5,16 @@ var MF = {};
  * @param data
  */
 MF.renderFact = function(data) {
-    var fDate = data.ts || new Date();
-    var fUser = data.author || 'anonymous';
-    var fBody = data.fact;
+    var fDate = data.ts || new Date(),
+        d = new Date(fDate),
+        strDate = d.toLocaleDateString() + ', ' + d.toLocaleTimeString(),
+        fUser = data.author || 'anonymous',
+        fBody = data.fact;
 
     var tpl =
         '<div class="post">' +
             '<div class="title">' +
-            '<p><small>Posted on ' + fDate + ' by <a href="#">' + fUser + '</a></small></p>' +
+            '<p><small>Posted on ' + strDate + ' by <a href="#">' + fUser + '</a></small></p>' +
             '</div>' +
             '<div class="entry">' +
             '<p>' + fBody + '</p>' +
