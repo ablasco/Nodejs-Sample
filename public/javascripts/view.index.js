@@ -1,8 +1,9 @@
+// Namespace for app utility methods.
 var MF = {};
 
 /**
  * Utility function to render the fact.
- * @param data
+ * @param {Object} data
  */
 MF.renderFact = function(data) {
     var id = data._id || null,
@@ -12,35 +13,58 @@ MF.renderFact = function(data) {
         fUser = data.author || 'anonymous',
         fBody = data.fact;
 
-    var tpl =
+    return '' +
         '<div class="post">' +
             '<div class="hidden">' + id + '</div>' +
             '<div class="title">' +
-                '<p><small>Posted on ' + strDate + ' by <a href="#">' + fUser + '</a></small></p>' +
+                '<p>Posted on ' + strDate + ' by <a href="#">' + fUser + '</a></p>' +
             '</div>' +
             '<div class="entry">' +
                 '<p>' + fBody + '</p>' +
             '</div>' +
-//            '<p class="links">' +
-//                '<a href="#" class="more">Read More</a>' +
-//                '&nbsp;&nbsp;&nbsp;' +
-//                '<a href="#" class="comments">No Comments</a>' +
-//            '</p>' +
             '<p class="links">' +
                 '<a href="#" class="edit">Edit</a>' +
                 '&nbsp;&nbsp;&nbsp;' +
                 '<a href="#" class="delete">Delete</a>' +
             '</p>' +
         '</div>';
+};
 
-    return tpl;
+/**
+ * Forces reload on facts list by clicking the matching list item.
+ * @param {String} heroName
+ */
+MF.reloadList = function(heroName) {
+    $('#new-fact-form').dialog('destroy');
+    $('#heroes li a').filter(function() {
+        return ($(this).text() == heroName);
+    }).click();
+};
+
+/**
+ * Configure and render a notification item.
+ * @param {String} msg
+ * @param {String} type (Optional, defaults to "notify")
+ */
+MF.notify = function(msg, type) {
+    var delay = 4500;
+
+    if (type === 'error') {
+        $('<p>').text(msg).appendTo('#notification-list').asError().slideDown('slow');
+    } else {
+        $('<p>').text(msg).appendTo('#notification-list').asHighlight().slideDown('slow');
+    }
+
+    $('#notification-list div').each(function(idx, el) {
+        $(el).delay(delay).slideUp('slow');
+    });
 };
 
 /**
  * Lists all facts about a given hero.
  */
 MF.listFacts = function() {
-    var name = $(this).text();
+    var name = $(this).text() || $('#content h2').text();
 
     $('#content h2').text(name);
     $('#facts div').remove();
@@ -56,11 +80,9 @@ MF.listFacts = function() {
             var id = $(el).find('.hidden').text(),
                 hero = $('#content h2').text(),
                 fact = $(el).find('.entry p').text();
-            console.log('found id:', id);
 
             $('.edit', el).click(function() {
-                console.log('editing:', id);
-                $("#new-fact-form").dialog({
+                $('#new-fact-form').dialog({
                     modal: true,
                     title: 'Edit fact'
                 });
@@ -68,7 +90,6 @@ MF.listFacts = function() {
                 $('#new-fact-form #fact-id').val(id);
                 $('#new-fact-form #hero').val(hero);
                 $('#new-fact-form #new-fact').val(fact);
-
                 $('#add-new-fact').unbind('click');
                 $('#add-new-fact').click(MF.editFact);
 
@@ -76,44 +97,39 @@ MF.listFacts = function() {
             });
 
             $('.delete', el).click(function() {
-                console.log('deleting:', id);
-
-                $("#dialog-confirm").dialog({
+                $('#dialog-confirm').dialog({
                     resizable: false,
                     height: 200,
                     modal: true,
                     title: 'Confirmation',
                     buttons: {
-                        "Delete fact": function() {
+                        'Delete fact': function() {
                             $.ajax({
-                                type: "GET",
-                                url: "/hero/delete-fact/" + id,
-                                //url: "/hero/delete-fact",
-                                //data: JSON.stringify({ id: id }),
-                                contentType: "application/json; charset=utf-8",
-                                dataType: "json",
+                                type: 'GET',
+                                url: '/hero/delete-fact/' + id,
+                                contentType: 'application/json; charset=utf-8',
+                                dataType: 'json',
 
-                                success: function(data) {
-                                    console.log('deleted: ', id);
-/*
-                                    var tpl = MF.renderFact(fact);
-                                    $(tpl).appendTo('#facts');
-
-                                    $('#new-fact').val('');
-*/
+                                success: function() {
+                                    var msg = 'Fact deleted successfully!';
+                                    $('#new-fact-form').dialog('destroy');
+                                    MF.notify(msg);
+                                    MF.reloadList(hero);
                                 },
 
                                 error: function(err) {
                                     var msg = 'Status: ' + err.status + ': ' + err.responseText;
-                                    alert(msg);
+                                    $('#new-fact-form').dialog('destroy');
+                                    MF.notify(msg, 'error');
+                                    MF.reloadList(hero);
                                 }
                             });
 
 
-                            $(this).dialog("close");
+                            $(this).dialog('close');
                         },
-                        Cancel: function() {
-                            $(this).dialog("close");
+                        'Cancel': function() {
+                            $(this).dialog('close');
                         }
                     }
                 });
@@ -137,22 +153,24 @@ MF.addFact = function() {
         fact = $('#new-fact').val();
 
     $.ajax({
-        type: "POST",
-        url: "/hero/add-fact",
+        type: 'POST',
+        url: '/hero/add-fact',
         data: JSON.stringify({ author: 'anonymous-form', hero: name, fact: fact }),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
 
-        success: function(data) {
-//            var tpl = MF.renderFact(fact);
-//            $(tpl).appendTo('#facts');
-//
-//            $('#new-fact').val('');
+        success: function() {
+            var msg = 'Fact created successfully!';
+            $('#new-fact-form').dialog('destroy');
+            MF.notify(msg);
+            MF.reloadList(name);
         },
 
         error: function(err) {
             var msg = 'Status: ' + err.status + ': ' + err.responseText;
-            alert(msg);
+            $('#new-fact-form').dialog('destroy');
+            MF.notify(msg, 'error');
+            MF.reloadList(name);
         }
     });
 
@@ -168,33 +186,62 @@ MF.editFact = function() {
         id = $('#fact-id').val();
 
     $.ajax({
-        type: "POST",
-        url: "/hero/edit-fact",
+        type: 'POST',
+        url: '/hero/edit-fact',
         data: JSON.stringify({ id: id, author: 'anonymous-form', hero: name, fact: fact }),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
 
-        success: function(data) {
-//            var tpl = MF.renderFact(fact);
-//            $(tpl).appendTo('#facts');
-//
-//            $('#new-fact').val('');
+        success: function() {
+            var msg = 'Fact updated successfully!';
+
+            MF.notify(msg);
+            MF.reloadList(name);
         },
 
         error: function(err) {
             var msg = 'Status: ' + err.status + ': ' + err.responseText;
-            alert(msg);
+            $('#new-fact-form').dialog('destroy');
+            MF.notify(msg);
+            MF.reloadList(name);
         }
     });
 
     return false;
 };
 
+/**
+ * Main entry point.
+ */
 $(function() {
+    $.fn.asError = function() {
+        return this.each(function() {
+            $(this).replaceWith(function(i, html) {
+                return '' +
+                    '<div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"><p>' +
+                        '<span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>' +
+                        html +
+                    '</p></div>';
+            });
+        });
+    };
+
+    $.fn.asHighlight = function() {
+        return this.each(function() {
+            $(this).replaceWith(function(i, html) {
+                return '' +
+                    '<div class="ui-state-highlight ui-corner-all" style="padding: 0 .7em;"><p>' +
+                        '<span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>' +
+                        html +
+                    '</p></div>';
+            });
+        });
+    };
+
     // Initial state.
     $('#content').hide();
     // a workaround for a flaw in the demo system (http://dev.jqueryui.com/ticket/4375), ignore!
-    $("#dialog:ui-dialog").dialog("destroy");
+    $('#dialog:ui-dialog').dialog('destroy');
 
 
     $('#add-new-fact').button({disabled: true});
@@ -202,7 +249,7 @@ $(function() {
         var noValue = (evt.target.value === ''),
             btn = $('#add-new-fact');
 
-        btn.button("option", "disabled", noValue);
+        btn.button('option', 'disabled', noValue);
     });
 
     // Binding event handlers.
@@ -211,10 +258,13 @@ $(function() {
     $('#show-add')
         .button()
         .click(function() {
-            $("#new-fact-form").dialog({
+            $('#new-fact-form').dialog({
                 modal: true,
                 title: 'Add new fact'
             });
+
+            $('#new-fact-form #hero').val($('#content h2').text());
+            $('#new-fact-form #new-fact').val('');
             $('#add-new-fact').click(MF.addFact);
 
             return false;

@@ -38,10 +38,12 @@ img.left{float:left;margin:8px 20px 0 0;border:2px solid #434343}
 #content{float:left;width:430px}
 #content-header img,#content-header h2,#content-header h3{display:block;float:left;width:275px;margin-top:15px}
 #content-header img{width:auto;margin:0 2em 3em 0;border:2px solid #bababa}
+#notification-list{clear:both;}
+#notification-list div{margin-bottom:1em}
 .post{clear:both;margin-bottom:50px;}
 .post .title,.post .links{background:#f3f3f3 url("../images/img08.gif") no-repeat}
 .post .title h2{font-size:2.2em}
-.post .title p{margin:0;padding:5px 5px 5px 30px;line-height:normal;color:#bababa;background:url("../images/img10.gif") 7px 7px no-repeat;}
+.post .title p{margin:0;padding:5px 5px 5px 30px;font-size:small;line-height:normal;color:#bababa;background:url("../images/img10.gif") 7px 7px no-repeat;}
 .post .title p a{color:#bababa}
 .post .entry{padding-top:15px}
 .post .links{width:410px;height:29px;margin:0;padding:6px 0 0 20px;}

@@ -52,6 +52,6 @@ exports.deleteFact = function(req, res) {
   factsdb.delete(req.params.id, function(error) {
     if (error) throw error;
     res.json({status: 'ok' });
-    console.log('Deleted fact: ' + id);
+    console.log('Deleted fact: ' + req.params.id);
   });
 }
